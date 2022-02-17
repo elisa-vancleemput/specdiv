@@ -134,6 +134,7 @@ count_noNA <- function(x) {
 }
 
 ### Count masked/missing pixels -----
+# Adapted, to include rectangular pixels
 count_pixels <- function(cube, fact = 40) {
   require(raster)
   require(tidyverse)
@@ -152,12 +153,24 @@ count_pixels <- function(cube, fact = 40) {
   cube_points <- rasterToPoints(cube) %>% 
     as_tibble() %>% 
    right_join(plot_points, by = c('x', 'y'))
-  n_pixels <- cube_points %>% 
-    group_by(group) %>% 
-    do(count_noNA(.)) %>% 
-    mutate(n_total = fact^2,
-           prop = n / n_total) %>% 
-    ungroup()
+  
+  if (length(fact) == 1){
+    n_pixels <- cube_points %>% 
+      group_by(group) %>% 
+      do(count_noNA(.)) %>% 
+      mutate(n_total = fact^2,
+             prop = n / n_total) %>% 
+      ungroup()
+    
+  } else if (length == 2){
+    n_pixels <- cube_points %>% 
+      group_by(group) %>% 
+      do(count_noNA(.)) %>% 
+      mutate(n_total = fact[1]*fact[2],
+             prop = n / n_total) %>% 
+      ungroup()
+  }
+  
   group_df <- SpatialPixelsDataFrame(plot_xy, dplyr::select(n_pixels, n:prop), proj4string = CRS(proj4string(cube) ))
   cube_count <- brick(group_df)
   return(cube_count)
