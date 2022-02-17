@@ -149,7 +149,7 @@ count_pixels <- function(cube, fact = 40) {
   # Convert to points
   plot_points <- rasterToPoints(cube_pixels) %>% 
     as_tibble() %>% 
-    dplyr::dplyr::rename(group = layer)
+    dplyr::rename(group = layer)
   cube_points <- rasterToPoints(cube) %>% 
     as_tibble() %>% 
    right_join(plot_points, by = c('x', 'y'))
