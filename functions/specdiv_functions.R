@@ -149,7 +149,7 @@ count_pixels <- function(cube, fact = 40) {
   # Convert to points
   plot_points <- rasterToPoints(cube_pixels) %>% 
     as_tibble() %>% 
-    dplyr::rename(group = layer)
+    dplyr::dplyr::rename(group = layer)
   cube_points <- rasterToPoints(cube) %>% 
     as_tibble() %>% 
    right_join(plot_points, by = c('x', 'y'))
@@ -239,10 +239,10 @@ specdiv <- function(cube, fact = 40, prop = 0.5, n = 1) {
   # Convert to points
   plots_points <- rasterToPoints(cube_plots_masked) %>% 
     as_tibble() %>% 
-    rename(group = layer)
+    dplyr::rename(group = layer)
   pixels_points <- rasterToPoints(cube_pixels) %>% 
     as_tibble() %>% 
-    rename(group = layer)
+    dplyr::rename(group = layer)
   
   # Objects to store results
   gamma_ss <- double()
@@ -312,7 +312,7 @@ specdiv <- function(cube, fact = 40, prop = 0.5, n = 1) {
   
   # LCSD beta
   lcsd_beta_values <- beta_lcsd %>% 
-    rename(lcsd_beta = lcsd) %>% 
+    dplyr::rename(lcsd_beta = lcsd) %>% 
     dplyr::select(-rep) %>% 
     group_by(group) %>% 
     summarise_all(mean) %>% 
@@ -323,7 +323,7 @@ specdiv <- function(cube, fact = 40, prop = 0.5, n = 1) {
   
   # LCSS beta
   lcss_beta_values <- beta_lcss %>% 
-    rename(lcss_beta = lcss) %>% 
+    dplyr::rename(lcss_beta = lcss) %>% 
     dplyr::select(-rep) %>% 
     group_by(group) %>% 
     summarise_all(mean) %>% 
@@ -360,7 +360,7 @@ specdiv <- function(cube, fact = 40, prop = 0.5, n = 1) {
   sdiv_beta <- mean(beta_sdiv)
   sdiv_gamma <- mean(gamma_sdiv)
   sdiv_alpha_values <- alpha_sdiv %>% 
-    rename(sdiv_alpha = sdiv) %>% 
+    dplyr::rename(sdiv_alpha = sdiv) %>% 
     dplyr::select(-rep) %>% 
     group_by(group) %>% 
     summarise_all(mean) %>% 
