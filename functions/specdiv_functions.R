@@ -162,7 +162,7 @@ count_pixels <- function(cube, fact = 40) {
              prop = n / n_total) %>% 
       ungroup()
     
-  } else if (length == 2){
+  } else if (length(fact) == 2){
     n_pixels <- cube_points %>% 
       group_by(group) %>% 
       do(count_noNA(.)) %>% 
